@@ -48,11 +48,12 @@ pipeline {
         stage('Deploy to Firebase') {
             steps {
                 echo "Deploying to Firebase hosting..."
-                dir('firebase-app') {
-                    sh 'npm install -g firebase-tools'
-                    sh 'firebase --version'
-                    sh 'firebase deploy --only hosting --token "$FIREBASE_TOKEN" --debug'
-                }
+
+                // Firebase CLI already installed globally inside container
+                sh 'firebase --version'
+
+                // Deploy from ROOT where firebase.json exists
+                sh 'firebase deploy --only hosting --token "$FIREBASE_TOKEN" --debug'
             }
         }
     }
